@@ -8,32 +8,39 @@ import textFactory, { textFilter } from "react-bootstrap-table2-filter";
 import dateFactory, { dateFilter } from "react-bootstrap-table2-filter";
 
 const App = () => {
-  const [players, setPlayers] = useState([]);
+  const [dailythirtyflashreport, setdailythirtyflashreport] = useState([]);
   const [loading, setLoading] = useState(false);
-  const getPlayerData = async () => {
+  const getdailythirtyflashreportData = async () => {
     try {
       const data = await axios.get(
-        "https://nba-players.herokuapp.com/players-stats"
+        "http://localhost:3000/dailythirtyflashreport"
       );
       console.log(data);
-      setPlayers(data.data);
+      setdailythirtyflashreport(data.data);
       setLoading(true);
     } catch (e) {
       console.log(e);
     }
   };
   const columns = [
-    { dataField: "name", text: "Player Name", sort: true },
-    { dataField: "points_per_game", text: "Points Per Game", sort: true, filter: dateFilter() },
-    { dataField: "games_played", text: "games_played", sort: true },
-    { dataField: "assists_per_game", text: "assists_per_game", filter: textFilter() },
-    { dataField: "minutes_per_game", text: "minutes_per_game" },
-    { dataField: "turnovers_per_game", text: "turnovers_per_game" },
+    { dataField: "infomationclassificationcode", text: "情報区分コード", sort: true },
+    { dataField: "sendercode", text: "送信者コード", filter: textFilter(), sort: true},
+    { dataField: "sendername", text: "送信者名称", sort: true },
+    { dataField: "receivercode", text: "受信者コード", filter: textFilter() },
+    { dataField: "receivername", text: "受信者名称" },
+    { dataField: "filecreatedate", text: "ファイル作成年月日" },
+    { dataField: "filecreatetime", text: "ファイル作成時分" },
+    { dataField: "createddate", text: "取得年月日", filter: dateFilter()  },
+    { dataField: "supplypointspecificnum", text: "供給地点特定番号", filter: textFilter() },
+    { dataField: "customerid", text: "需要家識別番号" },
+    { dataField: "customername", text: "需要家名" },
+    { dataField: "managementnum", text: "管理番号", filter: textFilter() },
+    { dataField: "voltageflg", text: "電圧区分" },
   ];
 
 
   useEffect(() => {
-    getPlayerData();
+    getdailythirtyflashreportData();
   }, []);
 
   return (
@@ -41,7 +48,7 @@ const App = () => {
       {loading ? (
         <BootstrapTable
           keyField="name"
-          data={players}
+          data={dailythirtyflashreport}
           columns={columns}
           pagination={paginationFactory()}
           filter={textFactory()}
